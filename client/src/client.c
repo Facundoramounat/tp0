@@ -14,7 +14,7 @@ int main(void)
 
 	/* ---------------- LOGGING ---------------- */
 
-	logger = log_create("tp0.log","carlos",true,LOG_LEVEL_INFO);
+	logger = iniciar_logger();
 
 	log_info(logger,"Soy un Log");
 	log_destroy(logger);
@@ -53,7 +53,7 @@ int main(void)
 
 t_log* iniciar_logger(void)
 {
-	t_log* nuevo_logger;
+	t_log* nuevo_logger = log_create("tp0.log","carlos",true,LOG_LEVEL_INFO);
 
 	return nuevo_logger;
 }
