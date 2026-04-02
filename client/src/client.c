@@ -17,7 +17,6 @@ int main(void)
 	logger = iniciar_logger();
 
 	log_info(logger,"Soy un Log");
-	log_destroy(logger);
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
