@@ -19,9 +19,7 @@ int main(void)
 
 	logger = iniciar_logger();
 
-	// Usando el logger creado previamente
-	// Escribi: "Hola! Soy un log"
-
+	log_info(logger,"Soy un Log");
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
@@ -70,7 +68,7 @@ int main(void)
 
 t_log* iniciar_logger(void)
 {
-	t_log* nuevo_logger;
+	t_log* nuevo_logger = log_create("tp0.log","carlos",true,LOG_LEVEL_INFO);
 
 	return nuevo_logger;
 }
@@ -86,14 +84,16 @@ void leer_consola(t_log* logger)
 {
 	char* leido;
 
-	// La primera te la dejo de yapa
-	leido = readline("> ");
+	while(1){
+		leido = readline("> ");
 
-	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
-
-
-	// ¡No te olvides de liberar las lineas antes de regresar!
-
+		if(leido == NULL || (*leido) == '\0')
+			break;
+		
+		
+		log_info(logger, leido);
+		free(leido);
+	}
 }
 
 void paquete(int conexion)
@@ -114,3 +114,4 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
 	  con las funciones de las commons y del TP mencionadas en el enunciado */
 }
+
