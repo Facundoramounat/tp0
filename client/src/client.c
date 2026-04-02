@@ -27,7 +27,6 @@ int main(void)
 
 	if (config == NULL){
 		log_error(logger, "error al leer .config");
-		abort();
 		return 0;
 	}
 	ip = config_get_string_value(config, "IP");
@@ -75,7 +74,7 @@ t_log* iniciar_logger(void)
 
 t_config* iniciar_config(void)
 {
-	t_config* nuevo_config = config_create("client/cliente.config"); 
+	t_config* nuevo_config = config_create("cliente.config"); 
 
 	return nuevo_config;
 }
