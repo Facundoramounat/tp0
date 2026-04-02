@@ -27,7 +27,7 @@ int main(void)
 
 	if (config == NULL){
 		log_error(logger, "error al leer .config");
-		return 0;
+		abort();
 	}
 	ip = config_get_string_value(config, "IP");
 	puerto = config_get_string_value(config, "PUERTO");
