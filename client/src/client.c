@@ -1,4 +1,7 @@
 #include "client.h"
+#include <commons/config.h>
+#include <string.h>
+
 
 int main(void)
 {
@@ -24,9 +27,22 @@ int main(void)
 
 	config = iniciar_config();
 
+	if (config == NULL){
+		log_error(logger, "error al leer .config");
+		abort();
+		return 0;
+	}
+	ip = config_get_string_value(config, "IP");
+	puerto = config_get_string_value(config, "PUERTO");
+	valor = config_get_string_value(config, "VALOR");
+
+	log_info(logger, "IP: %s", ip);
+	log_info(logger, "PUERTO: %s", puerto);
+	log_info(logger, "VALOR: %s", valor);
+	
+
 	// Usando el config creado previamente, leemos los valores del config y los 
 	// dejamos en las variables 'ip', 'puerto' y 'valor'
-
 	// Loggeamos el valor de config
 
 
@@ -61,7 +77,7 @@ t_log* iniciar_logger(void)
 
 t_config* iniciar_config(void)
 {
-	t_config* nuevo_config;
+	t_config* nuevo_config = config_create("client/cliente.config"); 
 
 	return nuevo_config;
 }
