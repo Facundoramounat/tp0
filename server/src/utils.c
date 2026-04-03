@@ -2,28 +2,32 @@
 
 t_log* logger;
 
-int iniciar_servidor(void)
-{
-	// Quitar esta línea cuando hayamos terminado de implementar la funcion
-	//assert(!"no implementado!");
-
-	int socket_servidor;
-
-	struct addrinfo hints, *servinfo, *p;
+int generar_addrinfo(struct addrinfo** servinfo){
+	struct addrinfo hints;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE;
 
-	getaddrinfo(NULL, PUERTO, &hints, &servinfo);
+	return getaddrinfo(NULL, PUERTO, &hints, servinfo);
+}
+
+int iniciar_servidor(void)
+{
+	struct addrinfo* servinfo;
+	int err = generar_addrinfo(&servinfo);
+	if(err != 0) return ERR_ADDRINFO;
+
+	int socket_servidor;
 
 	// Creamos el socket de escucha del servidor
     socket_servidor = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+	if (socket_servidor == -1) return ERR_SOCKET;
 
 	// Asociamos el socket a un puerto
-	bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen);
-
+	if(bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen) == -2) return ERR_BIND;
+	
 	freeaddrinfo(servinfo);
 	log_trace(logger, "Listo para escuchar a mi cliente");
 

@@ -8,10 +8,14 @@
 #include<netdb.h>
 #include<commons/log.h>
 #include<commons/collections/list.h>
+#include<commons/error.h>
 #include<string.h>
 #include<assert.h>
 
 #define PUERTO "4444"
+#define ERR_ADDRINFO -2
+#define ERR_SOCKET -3
+#define ERR_BIND -4
 
 typedef enum
 {

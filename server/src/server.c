@@ -3,8 +3,27 @@
 int main(void) {
 	logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
 
+	//Obtener el fd del servidor con un serverinfo valido
 	int server_fd = iniciar_servidor();
-	log_info(logger, "Servidor listo para recibir al cliente");
+	switch (server_fd){
+		case ERR_ADDRINFO:
+			log_error(logger, "Error al crear la red");
+			log_destroy(logger);
+			return EXIT_FAILURE;
+		case ERR_SOCKET:
+			log_error(logger, "Error al crear el socket");
+			log_destroy(logger);
+			return EXIT_FAILURE;
+		case ERR_BIND:
+			log_error(logger, "No se pudo establecer conexion con el puerto, Esta ocupado?");
+			log_destroy(logger);
+			return EXIT_FAILURE;
+		default:
+			log_info(logger, "Servidor listo para recibir al cliente");
+			break;
+	}
+	return EXIT_SUCCESS;
+
 	int cliente_fd = esperar_cliente(server_fd);
 
 	t_list* lista;
