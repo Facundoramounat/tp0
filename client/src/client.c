@@ -54,6 +54,12 @@ int main(void)
 	// Creamos una conexión hacia el servidor
 	conexion = crear_conexion(ip, puerto);
 
+	if(conexion==-1){
+		log_error(logger,"Error en la conexion con el cliente");
+		abort();
+	}
+
+	
 	// Enviamos al servidor el valor de CLAVE como mensaje
 
 	// Armamos y enviamos el paquete
