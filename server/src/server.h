@@ -8,7 +8,7 @@
 #include "utils.h"
 
 
-
+int verficar_socket(t_log** logger, int socket);
 void iterator(char* value);
 
 #endif /* SERVER_H_ */
