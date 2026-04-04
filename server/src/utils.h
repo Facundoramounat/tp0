@@ -16,6 +16,8 @@
 #define ERR_ADDRINFO -2
 #define ERR_SOCKET -3
 #define ERR_BIND -4
+#define ERR_LISTEN -5
+#define ERR_ACCEPT -6
 
 typedef enum
 {

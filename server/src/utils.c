@@ -26,22 +26,26 @@ int iniciar_servidor(void)
 	if (socket_servidor == -1) return ERR_SOCKET;
 
 	// Asociamos el socket a un puerto
-	if(bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen) == -2) return ERR_BIND;
+	if(bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen) == -2){
+		close(socket_servidor);
+		return ERR_BIND;
+	}
+	
+	// Ponemos el servidor en modo de escucha
+	if(listen(socket_servidor, SOMAXCONN) == -1){
+		close(socket_servidor);
+		return ERR_LISTEN;	
+	}
 	
 	freeaddrinfo(servinfo);
-	log_trace(logger, "Listo para escuchar a mi cliente");
-
 	return socket_servidor;
 }
 
 int esperar_cliente(int socket_servidor)
 {
-	// Quitar esta línea cuando hayamos terminado de implementar la funcion
-	assert(!"no implementado!");
-
 	// Aceptamos un nuevo cliente
-	int socket_cliente;
-	log_info(logger, "Se conecto un cliente!");
+	int socket_cliente = accept(socket_servidor, NULL, NULL);
+	if(socket_cliente == -1) return ERR_ACCEPT;
 
 	return socket_cliente;
 }
