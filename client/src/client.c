@@ -54,12 +54,10 @@ int main(void)
 	// Creamos una conexión hacia el servidor
 	conexion = crear_conexion(ip, puerto);
 
-	if(conexion==-1){
-		log_error(logger,"Error en la conexion con el cliente");
-		abort();
-	}
-
+	if(verificar_conexion(&logger, conexion) == -1) return EXIT_FAILURE;
 	
+	log_info(logger, "Cliente conectado con exito");
+
 	// Enviamos al servidor el valor de CLAVE como mensaje
 
 	// Armamos y enviamos el paquete
@@ -71,9 +69,29 @@ int main(void)
 	// Proximamente
 }
 
+// Verifica si la conexion fue exitosa. En caso de no serlo, lo documenta en el logger y libera la memoria, retornando -1.
+int verificar_conexion(t_log** logger, int conexion){
+	switch (conexion){
+		case ERR_ADDRINFO:
+			log_error(*logger, "Error en el addrinfo");
+			log_destroy(*logger);
+			return -1;
+		case ERR_SOCKET:
+			log_error(*logger, "Error al crear el socket");
+			log_destroy(*logger);
+			return -1;
+		case ERR_CONNECT:
+			log_error(*logger, "Error al conectar");
+			log_destroy(*logger);
+			return -1;
+		default:
+			return 0;
+	}
+}
+
 t_log* iniciar_logger(void)
 {
-	t_log* nuevo_logger = log_create("tp0.log","carlos",true,LOG_LEVEL_INFO);
+	t_log* nuevo_logger = log_create("cliente.log","cliente",true,LOG_LEVEL_INFO);
 
 	return nuevo_logger;
 }

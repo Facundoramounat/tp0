@@ -10,6 +10,10 @@
 #include<string.h>
 #include<commons/log.h>
 
+#define ERR_ADDRINFO -2
+#define ERR_SOCKET -3
+#define ERR_CONNECT -4
+
 typedef enum
 {
 	MENSAJE,
