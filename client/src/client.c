@@ -10,7 +10,7 @@ int main(void)
 	int conexion;
 	char* ip;
 	char* puerto;
-	char* valor;
+	char* clave;
 
 	t_log* logger;
 	t_config* config;
@@ -31,11 +31,11 @@ int main(void)
 	}
 	ip = config_get_string_value(config, "IP");
 	puerto = config_get_string_value(config, "PUERTO");
-	valor = config_get_string_value(config, "VALOR");
+	clave = config_get_string_value(config, "CLAVE");
 
 	log_info(logger, "IP: %s", ip);
 	log_info(logger, "PUERTO: %s", puerto);
-	log_info(logger, "VALOR: %s", valor);
+	log_info(logger, "CLAVE: %s", clave);
 	
 
 	// Usando el config creado previamente, leemos los valores del config y los 
@@ -59,6 +59,8 @@ int main(void)
 	log_info(logger, "Cliente conectado con exito");
 
 	// Enviamos al servidor el valor de CLAVE como mensaje
+	
+	enviar_mensaje(clave,socket_cliente);
 
 	// Armamos y enviamos el paquete
 	paquete(conexion);
@@ -136,5 +138,6 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
 	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
 	  con las funciones de las commons y del TP mencionadas en el enunciado */
+	
 }
 

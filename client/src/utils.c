@@ -16,46 +16,38 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 	return magic;
 }
 
-int generar_addrinfo(struct addrinfo** servinfo, char *ip, char* puerto){
+int crear_conexion(char *ip, char* puerto)
+{
 	struct addrinfo hints;
+	struct addrinfo *server_info;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 
-	return getaddrinfo(ip, puerto, &hints, servinfo);
-}
 
-int crear_conexion(char *ip, char* puerto)
-{
-	struct addrinfo *server_info;
-
-	if(generar_addrinfo(&server_info, ip, puerto) != 0) return ERR_ADDRINFO;
+	getaddrinfo(ip, puerto, &hints, &server_info);
 
 	// Ahora vamos a crear el socket.
 	int socket_cliente = socket(server_info->ai_family,server_info->ai_socktype,server_info->ai_protocol);
-	if(socket_cliente == -1){
-		freeaddrinfo(server_info);
-		return ERR_SOCKET;
-	} 
 
 	// Ahora que tenemos el socket, vamos a conectarlo
 
 	int estado = connect(socket_cliente,server_info->ai_addr,server_info->ai_addrlen);
-	if(estado == -1){
-		liberar_conexion(socket_cliente);
-		freeaddrinfo(server_info);
-		return ERR_CONNECT;	
-	}
+	
 
 	freeaddrinfo(server_info);
-	return socket_cliente;
+	if(estado==0){
+		return socket_cliente;
+	}
+	else{
+		return -1;	
+	}
 }
 
 void enviar_mensaje(char* mensaje, int socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
-
 	paquete->codigo_operacion = MENSAJE;
 	paquete->buffer = malloc(sizeof(t_buffer));
 	paquete->buffer->size = strlen(mensaje) + 1;
