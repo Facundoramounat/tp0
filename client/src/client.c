@@ -60,8 +60,8 @@ int main(void)
 
 	// Enviamos al servidor el valor de CLAVE como mensaje
 	
-	enviar_mensaje(clave,socket_cliente);
-
+	enviar_mensaje(clave, conexion);
+	return EXIT_SUCCESS;
 	// Armamos y enviamos el paquete
 	paquete(conexion);
 
